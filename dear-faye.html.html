@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Faye</title>
+    <style>
+        :root {
+            --neon-blue: #00f7ff;
+            --bg-dark: #050505;
+            --card-bg: #111;
+            --envelope-color: #1a1a1a;
+            --flap-color: #222;
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--bg-dark);
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* --- Envelope Body --- */
+        .envelope {
+            position: relative;
+            width: 320px;
+            height: 220px;
+            background-color: var(--envelope-color);
+            box-shadow: 0 0 25px rgba(0, 247, 255, 0.2);
+        }
+
+        /* --- Flaps --- */
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-style: solid;
+            border-width: 110px 160px 110px 0;
+            border-color: transparent var(--flap-color) transparent transparent;
+            z-index: 3;
+        }
+        .envelope::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            border-style: solid;
+            border-width: 110px 0 110px 160px;
+            border-color: transparent transparent transparent var(--flap-color);
+            z-index: 3;
+        }
+
+        .bottom-flap {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 160px 120px 160px;
+            border-color: transparent transparent #2a2a2a transparent;
+            z-index: 3;
+        }
+
+        .top-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 110px 160px 0 160px;
+            border-color: #333 transparent transparent transparent;
+            z-index: 4;
+            transform-origin: top;
+            transition: transform 0.6s ease-in-out;
+        }
+
+        /* --- The Letter Card --- */
+        .card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 280px;
+            height: 180px; /* Start small to fit inside */
+            background-color: var(--card-bg);
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 247, 255, 0.2) inset;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 2; /* Behind flaps initially */
+            transition: top 0.6s ease-in-out, height 0.6s ease-in-out, z-index 0.2s;
+            color: var(--neon-blue);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            overflow: hidden; 
+        }
+
+        /* --- Animation States --- */
+        .envelope-wrapper.open .top-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-wrapper.open .card {
+            top: -50px; 
+            height: 350px; /* Grow taller to show the full message */
+            transition-delay: 0.3s; 
+            z-index: 10; 
+        }
+
+        .card h2 { font-size: 1.2rem; margin-bottom: 10px; text-shadow: 0 0 5px var(--neon-blue); }
+        .card p { font-size: 0.8rem; line-height: 1.5; opacity: 0.9; }
+        .mini-heart { margin-top: auto; margin-bottom: 10px; color: var(--neon-blue); animation: pulse 1s infinite; }
+
+        @keyframes pulse {
+            0%, 100% { text-shadow: 0 0 5px var(--neon-blue); transform: scale(1); }
+            50% { text-shadow: 0 0 15px var(--neon-blue); transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="envelope-wrapper" onclick="toggleEnvelope()">
+        <div class="envelope">
+            <div class="top-flap"></div>
+            <div class="bottom-flap"></div>
+            
+            <div class="card">
+                <h2>Dear Faye,</h2>
+                <p>
+                    I wanted to write this just to tell you how special you are to me.
+                    <br><br>
+                    No matter how tough things get, you always manage to make my day better just by being you.
+                    <br><br>
+                    You are the highlight of my everyday.
+                </p>
+                <div class="mini-heart">♥</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleEnvelope() {
+            const envelope = document.querySelector('.envelope-wrapper');
+            envelope.classList.toggle('open');
+        }
+    </script>
+
+</body>
+</html>
